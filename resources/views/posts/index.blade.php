@@ -20,7 +20,7 @@
            @if($posts->count())
                @foreach($posts as $post)
                    <div class="mb-3">
-                          <a href="" class="font-bold">{{$post->user->name}}</a> <span class="text-gray-600 text-sm">{{$post->created_at->diffForHumans()}}</span><br>
+                          <a href="{{ route('users.posts',$post->user) }}" class="font-bold">{{$post->user->name}}</a> <span class="text-gray-600 text-sm">{{$post->created_at->diffForHumans()}}</span><br>
                        @php
 
                            $post_decode = json_decode($post, true);
@@ -43,7 +43,13 @@
                                     <button type="submit" class="text-blue-500">Dislike</button>
                                 </form>
                                 @endif
-
+                                 @can('delete', $post)
+                                       <form action="{{ route('posts.destroy', $post) }}" method="post" class="mr-1">
+                                           @csrf
+                                           @method('DELETE')
+                                           <button type="submit" class="text-blue-500">Delete</button>
+                                       </form>
+                                 @endcan
                            </div>
                        @endauth
 
